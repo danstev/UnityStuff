@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 //Require audio to create the animation
@@ -18,17 +18,21 @@ public class MusicGenTest : MonoBehaviour
     //array of the bars for use later
     private GameObject[] barArray;
     //Start vector
-    private Vector3 start = new Vector3(0, 0, 0);
+    public Vector3 start = new Vector3(0, 0, 0);
+    //private for transform position whilst keeping original coords
+    private Vector3 startCopy = new Vector3(0,0,0);
     //choose color
     public Color color = new Color(0, 1, 0);
+    //Quartinon for rotation
+    public Quaternion barRotate = new Quaternion(0,0,0,0);
 
     void Start()
     {
         //Init bars
         for (int i = 0; i < LinesToDisplay; i++)
         {
-            Instantiate(bar, start, Quaternion.identity);
-            start.x += offset;
+            Instantiate(bar, startCopy, Quaternion.identity);
+            startCopy.x += offset;
         }
         //fill array with the bars
         barArray = GameObject.FindGameObjectsWithTag ("AudioBar");
@@ -41,20 +45,22 @@ public class MusicGenTest : MonoBehaviour
         AudioListener.GetSpectrumData(spectrum, 0, FFTWindow.Rectangular);
 
         //reset start vector
-        start.x = 0;
-        start.y = 0;
-        start.z = 0;        
+        startCopy = start;       
 
         for (int i = 0; i < LinesToDisplay; i++)
         {
             //change color based on value
             color.r = spectrum[i];
-            
-            //Tranform bar
+            //Transform position
+            barArray[i].transform.position = startCopy;
+            //Tranform scale
             barArray[i].transform.localScale = new Vector3(1, spectrum[i] * multi, 0.1f);
+            //rotate bar
+            barArray[i].transform.rotation = barRotate;
             //color bar
             barArray[i].GetComponent<Renderer>().material.color = color;
+            //Offset for position uses
+            startCopy.x += offset;
         }
     }
 }
-
