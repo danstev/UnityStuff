@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class EnemyAi : MonoBehaviour {
@@ -23,7 +23,7 @@ public class EnemyAi : MonoBehaviour {
         if(Vector3.Distance(transform.position, target.transform.position) < meleeDistance && target != null)
         {
             transform.LookAt(target.transform);
-            targetHealthScript = target.GetComponent<Health>();
+            
             targetHealthScript.health -= attackPower * Time.deltaTime;
         }
 	}
@@ -38,10 +38,11 @@ public class EnemyAi : MonoBehaviour {
         {
             enemyDistance = (Vector3.Distance(transform.position, Player.transform.position));
             print(enemyDistance);
-            if(enemyDistance < enemyDistanceLow && enemyDistanceLow != 0)
+            if(enemyDistance < enemyDistanceLow && enemyDistanceLow != 0 && Player != target)
             {
                 enemyDistanceLow = enemyDistance;
                 current = Player;
+                targetHealthScript = current.GetComponent<Health>();
             }
         }
         return current;
