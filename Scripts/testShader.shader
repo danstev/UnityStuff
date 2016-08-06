@@ -48,7 +48,10 @@
 
 			float4 frag(v2f i) : SV_TARGET
 			{
+				//What the fuck was i thinking?
 				//return float4(i.uv.r, i.uv.g, 0, 0.5);
+				//It just uses a texture???
+				//I made a shader for that??
 				float4 color = tex2D(_MainTex, i.uv);
 				return color;
 			}
