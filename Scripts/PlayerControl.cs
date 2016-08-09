@@ -17,8 +17,11 @@ public class PlayerControl : MonoBehaviour {
 
     //Movement
     public float speed = 6.0F;
+    private float tempSpeed;
     public float jumpSpeed = 8.0F;
+    private float tempJump;
     public float gravity = 20.0F;
+    private float tempGrav;
     private Vector3 moveDirection = Vector3.zero;
     delegate void movementChange();
     delegate void movementStatus();
@@ -80,14 +83,14 @@ public class PlayerControl : MonoBehaviour {
             moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
             moveDirection = transform.TransformDirection(moveDirection);
             //Multiply it by speed.
-            moveDirection *= speed;
+            moveDirection *= tempSpeed;
             //Jumping
             if (Input.GetButton("Jump"))
-                moveDirection.y = jumpSpeed;
+                moveDirection.y = tempJump;
 
         }
         //Applying gravity to the controller
-        moveDirection.y -= gravity * Time.deltaTime;
+        moveDirection.y -= tempGrav * Time.deltaTime;
         //Making the character move
         controller.Move(moveDirection * Time.deltaTime);
 
@@ -111,9 +114,9 @@ public class PlayerControl : MonoBehaviour {
 
     void LavaGround()
     {
-        this.gravity = 20;
-        this.jumpSpeed = 8;
-        this.speed = 6;
+        this.tempGrav = gravity * 1;
+        this.tempJump = jumpSpeed * 1;
+        this.tempSpeed = speed * 1;
     }
 
     void LavaGroundStatus()
@@ -122,9 +125,9 @@ public class PlayerControl : MonoBehaviour {
     }
     void WaterGround()
     {
-        this.gravity = 5f;
-        this.jumpSpeed = 15f;
-        this.speed = 1.5f;
+        this.tempGrav = gravity * 0.5f;
+        this.tempJump = jumpSpeed * 0.5f;
+        this.tempSpeed = speed * 0.75f;
     }
 
     void WaterGroundStatus()
@@ -133,9 +136,9 @@ public class PlayerControl : MonoBehaviour {
     }
     void Ground()
     {
-        this.gravity = 20;
-        this.jumpSpeed = 8;
-        this.speed = 6;
+        this.tempGrav = gravity * 1;
+        this.tempJump = jumpSpeed * 1;
+        this.tempSpeed = speed * 1;
     }
 
     void GroundStatus()
