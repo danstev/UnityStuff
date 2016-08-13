@@ -12,6 +12,7 @@ public class NPCScript : MonoBehaviour {
     public float randomMoveTimer;
     private float randomMoveTimerSet;
     private Vector3 randomMove;
+    public float mod;
     public GameObject target;
     private ZombieScript zombie;
 
@@ -52,7 +53,7 @@ public class NPCScript : MonoBehaviour {
             if (randomMoveTimerSet <= 0)
             {
                 randomMoveTimerSet = randomMoveTimer * Random.Range(1, 2);
-                randomMove += new Vector3(Random.Range(-1 * speed, 1 * speed), 0, Random.Range(-1 * speed, 1 * speed));
+                randomMove = new Vector3(Random.Range(-1 * mod, 1 * mod), 0, Random.Range(-1 * mod, 1 * mod));
                 transform.position += randomMove;
             }
 
