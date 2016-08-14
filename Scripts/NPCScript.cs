@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class NPCScript : MonoBehaviour {
@@ -14,7 +14,7 @@ public class NPCScript : MonoBehaviour {
     private Vector3 randomMove;
     public float mod;
     public GameObject target;
-    private ZombieScript zombie;
+    private Health Enemy;
 
     // Use this for initialization
     void Start () {
@@ -26,6 +26,7 @@ public class NPCScript : MonoBehaviour {
 
         if (target == null)
         {
+            print("1");
             findTarget(); 
         }
 
@@ -40,10 +41,11 @@ public class NPCScript : MonoBehaviour {
         Collider[] detectColliders = Physics.OverlapSphere(transform.position, radius);
         for (int i = 0; i < detectColliders.Length; i++)
         {
-            if (detectColliders[i].tag == "Player")
+            print(detectColliders[i].name);
+            if (detectColliders[i].tag == "Player" || detectColliders[i].tag == "Enemy")
             {
                 target = detectColliders[i].gameObject;
-                zombie = target.GetComponent<ZombieScript>();
+                Enemy = target.GetComponent<Health>();
             }
 
         }
@@ -71,7 +73,7 @@ public class NPCScript : MonoBehaviour {
         if (attackTimer <= 0 && attackRadius > Vector3.Distance(transform.position, target.transform.position))
         {
             //Do attack
-            //targetHealth.health -= attackDamage;
+            Enemy.health -= attackDamage;
             //Set timer to attackspeed
             attackTimer = attackSpeed;
         }
@@ -79,13 +81,12 @@ public class NPCScript : MonoBehaviour {
         {
             attackTimer -= Time.deltaTime;
             float step = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, step / 2);
-
+            transform.position = movementCalc();
         }
         else
         {
-            float step = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, step);
+
+            transform.position = movementCalc();
         }
 
         //If target moves away
@@ -94,5 +95,26 @@ public class NPCScript : MonoBehaviour {
             target = null;
         }
 
+    }
+
+    Vector3 movementCalc()
+    {
+        Vector3 Movement;
+        float dist = Vector3.Distance(transform.position, target.transform.position);
+        float step = speed * Time.deltaTime;
+        if ( dist > radius )
+        {
+            Movement = Vector3.MoveTowards(transform.position, target.transform.position, step);
+        }
+        else if(dist < radius * 0.8)
+        {
+            Movement = Vector3.MoveTowards(transform.position, target.transform.position, step);
+        }
+        else
+        {
+            Movement = transform.position;
+        }
+
+        return Movement;
     }
 }
