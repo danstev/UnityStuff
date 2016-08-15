@@ -14,8 +14,8 @@ public class ZombieScript : MonoBehaviour
     private float randomMoveTimerSet;
     private Vector3 randomMove;
     public float mod;
-    private GameObject target;
-    private PlayerControl targetHealth;
+    public GameObject target;
+    private Health targetHealth;
 
     // Use this for initialization
     void Start()
@@ -39,14 +39,14 @@ public class ZombieScript : MonoBehaviour
 
     void findTarget()
     {
-        //If no target, try and find one, id none, walk randomly
+        //If no target, try and find one, if none, walk randomly
         Collider[] detectColliders = Physics.OverlapSphere(transform.position, radius);
         for (int i = 0; i < detectColliders.Length; i++)
         {
-            if (detectColliders[i].tag == "Player" || detectColliders[i].tag == "NPC")
+            if (detectColliders[i].tag == "NPC" || detectColliders[i].tag == "Player")
             {
                 target = detectColliders[i].gameObject;
-                targetHealth = target.GetComponent<PlayerControl>();
+                targetHealth = target.GetComponent<Health>();
             }
         }
 
