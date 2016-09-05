@@ -1,5 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+//Dan Ward
+//danstev.uk
+//
+//Place this script on the camera and attach the bar object.
+//This object can be anything with a transform.
+//So cubes, spheres etc all work. 
+
+
 
 //Require audio to create the animation
 [RequireComponent(typeof(AudioSource))]
@@ -63,5 +71,6 @@ public class MusicCameraTest : MonoBehaviour
             startCopy.x += offset;
         }
     }
+    
 }
 
